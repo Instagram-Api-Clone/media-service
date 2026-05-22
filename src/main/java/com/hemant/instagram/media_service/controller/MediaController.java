@@ -35,10 +35,10 @@ public class MediaController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MultimediaAsset> uploadMediaAsset(
             @RequestHeader("X-User-Id") Long uploaderId,
-            @RequestPart(value = "ownerType", required = false) MultimediaAssetOwnerType ownerType,
-            @RequestPart(value = "ownerId", required = false) Long ownerId,
+            @RequestParam(value = "ownerType", required = false) MultimediaAssetOwnerType ownerType,
+            @RequestParam(value = "ownerId", required = false) Long ownerId,
             @RequestPart("file") MultipartFile file,
-            @RequestPart(value = "metadata", required = false) String metadata) {
+            @RequestParam(value = "metadata", required = false) String metadata) {
         return ResponseEntity.ok(mediaService.uploadMediaAsset(uploaderId, ownerType, ownerId, file, parseMetadata(metadata)));
     }
 
