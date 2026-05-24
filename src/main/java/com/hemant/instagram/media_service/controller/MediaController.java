@@ -6,6 +6,7 @@ import com.hemant.instagram.media_service.dto.request.UpdateMediaAssetStatusRequ
 import com.hemant.instagram.media_service.entity.MultimediaAsset;
 import com.hemant.instagram.media_service.entity.enums.MultimediaAssetOwnerType;
 import com.hemant.instagram.media_service.service.MediaService;
+import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class MediaController {
     private final ObjectMapper objectMapper;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload Media Asset")
     public ResponseEntity<MultimediaAsset> uploadMediaAsset(
             @RequestHeader("X-User-Id") Long uploaderId,
             @RequestParam(value = "ownerType", required = false) MultimediaAssetOwnerType ownerType,
@@ -43,17 +45,20 @@ public class MediaController {
     }
 
     @GetMapping("/{mediaAssetId}")
+    @Operation(summary = "Get Media Asset by ID")
     public ResponseEntity<MultimediaAsset> getMediaAsset(@PathVariable Long mediaAssetId) {
         return ResponseEntity.ok(mediaService.getMediaAsset(mediaAssetId));
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Get My Media Assets")
     public ResponseEntity<List<MultimediaAsset>> getMyMediaAssets(
             @RequestHeader("X-User-Id") Long uploaderId) {
         return ResponseEntity.ok(mediaService.getMediaAssetsByUploader(uploaderId));
     }
 
     @GetMapping
+    @Operation(summary = "Get Media Assets by Owner")
     public ResponseEntity<List<MultimediaAsset>> getMediaAssetsByOwner(
             @RequestParam MultimediaAssetOwnerType ownerType,
             @RequestParam Long ownerId) {
@@ -61,6 +66,7 @@ public class MediaController {
     }
 
     @PatchMapping("/{mediaAssetId}/status")
+    @Operation(summary = "Update Media Asset Status")
     public ResponseEntity<MultimediaAsset> updateMediaAssetStatus(
             @PathVariable Long mediaAssetId,
             @RequestBody UpdateMediaAssetStatusRequest request) {
